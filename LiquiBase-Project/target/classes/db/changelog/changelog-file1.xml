@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+	<!-- Inserting Data -->
+	<changeSet id="7657-2" author="bhuvan">
+		<comment>Inserting Data</comment>
+		<insert tableName="Student_liquibase_table">
+			<column name="id">105</column>
+			<column name="name">sajal</column>
+			<column name="age">23</column>
+			<column name="email">sajal@example.com</column>
+		</insert>
+		<insert tableName="Student_liquibase_table">
+			<column name="id">107</column>
+			<column name="name">mahesh</column>
+			<column name="age">24</column>
+			<column name="email">mahesh@example.com</column>
+		</insert>
+	</changeSet>
+
+	<!-- Updating Data -->
+	<changeSet id="7657-3" author="bhuvan">
+		<comment>Updating Data</comment>
+		<update tableName="Student_liquibase_table">
+			<column name="name">varun</column>
+			<column name="email">varun@example.com</column>
+			<where>id = 107</where>
+		</update>
+	</changeSet>
+
+	<!-- Deleting Data -->
+	<changeSet id="7657-4" author="bhuvan">
+		<comment>Deleting Data</comment>
+		<delete tableName="Student_liquibase_table">
+			<where>id = 107</where>
+		</delete>
+	</changeSet>
+
+	<!-- Renaming Table -->
+	<changeSet id="7657-5" author="bhuvan">
+		<comment>Renaming Table</comment>
+		<renameTable oldTableName="Student_liquibase_table"
+			newTableName="New_Student_liquibase" />
+	</changeSet>
+
+	<!-- Adding Column And Update Column -->
+	<changeSet id="7657-6" author="bhuvan">
+		<comment>Adding Column And Update Column</comment>
+		<addColumn tableName="New_Student_liquibase">
+			<column name="address" type="VARCHAR(255)" />
+		</addColumn>
+		<addColumn tableName="New_Student_liquibase">
+			<column name="phone" type="VARCHAR(255)" />
+		</addColumn>
+		<update tableName="New_Student_liquibase">
+			<column name="address">nagpur</column>
+			<column name="phone">7447667227</column>
+			<where>id = 101</where>
+		</update>
+		<update tableName="New_Student_liquibase">
+			<column name="address">vijaywada</column>
+			<column name="phone">12345678</column>
+			<where>id = 102</where>
+		</update>
+		<update tableName="New_Student_liquibase">
+			<column name="address">highangat</column>
+			<column name="phone">98765432</column>
+			<where>id = 105</where>
+		</update>
+		<update tableName="New_Student_liquibase">
+			<column name="address">chimur</column>
+			<column name="phone">2583691470</column>
+			<where>id = 106</where>
+		</update>
+	</changeSet>
+
+	<!-- Drop Phone Column -->
+	<changeSet id="7657-7" author="bhuvan">
+		<dropColumn tableName="New_Student_liquibase"
+			columnName="phone" />
+	</changeSet>
+
+	<!-- Modifying Column -->
+	<changeSet id="7657-8" author="bhuvan">
+		<comment>Modifying Column</comment>
+		<addColumn tableName="New_Student_liquibase">
+			<column name="new_age" type="INT" />
+		</addColumn>
+		<sql>
+			UPDATE New_Student_liquibase SET new_age = age;
+		</sql>
+		<dropColumn tableName="New_Student_liquibase"
+			columnName="age" />
+		<renameColumn tableName="New_Student_liquibase"
+			oldColumnName="new_age" newColumnName="age" columnDataType="INT" />
+	</changeSet>
+
+	<!-- Inserting Data from CSV <changeSet id="7657-9" author="bhuvan"> <comment>Inserting 
+		Data from CSV</comment> <loadData file="/static/loadData.csv" separator="," 
+		tableName="New_Student_liquibase"> <column name="id" type="NUMERIC" /> <column 
+		name="name" type="VARCHAR(255)" /> <column name="age" type="NUMERIC" /> <column 
+		name="email" type="VARCHAR(255)" /> <column name="address" type="VARCHAR(255)" 
+		/> </loadData> </changeSet> -->
+
+	<!-- Change Primary Key -->
+	<changeSet id="7657-11" author="bhuvan">
+		<comment>Change Primary Key</comment>
+		<!-- Drop existing primary key constraint -->
+		<dropPrimaryKey tableName="New_Student_liquibase"
+			constraintName="PK_New_Student_liquibase" />
+		<!-- Add new primary key constraint -->
+		<addPrimaryKey constraintName="PK_New_Student_liquibase"
+			columnNames="email" tableName="New_Student_liquibase" />
+	</changeSet>
+
+	<!-- Inserting New Data from CSV -->
+	<changeSet id="7657-12" author="bhuvan">
+		<comment>Inserting Data from CSV</comment>
+		<loadData file="/static/loadData.csv" separator=","
+			tableName="New_Student_liquibase">
+			<column name="id" type="NUMERIC" />
+			<column name="name" type="VARCHAR(255)" />
+			<column name="age" type="NUMERIC" />
+			<column name="email" type="VARCHAR(255)" />
+			<column name="address" type="VARCHAR(255)" />
+		</loadData>
+	</changeSet>
+
+	<!-- Creating a view for student information -->
+	<changeSet id="7657-13" author="bhuvan">
+		<comment>Creating a view for student information</comment>
+		<sql>
+    <![CDATA[
+    CREATE VIEW bhuvan.liquibase_view_student AS
+    SELECT id, email, name
+    FROM New_Student_liquibase;
+    ]]>
+		</sql>
+	</changeSet>
+   
+   
+   
+</databaseChangeLog>
